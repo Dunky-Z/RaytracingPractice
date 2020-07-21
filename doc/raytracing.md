@@ -127,3 +127,105 @@ $ABC$已知，这里是一个关于$t$的一元二次方程：
 </div>
 
 
+#### 镜面反射
+
+在一个场景里不仅有漫反射，还有镜面反射，折射等。现在来分析如何模拟镜面发射。
+
+要模拟镜面发射，最重要的就是计算镜面反射的反射光线的方向向量。
+
+<div  align="center">    
+<img src="https://gitee.com//dominic_z/markdown_picbed/raw/master/img/jinmianfanshe.jpg"  width = "30%"/>
+</div>
+
+
+假设光线$V$与交点法向量$N$的夹角为$\theta$，反射光线的方向向量$F=V+2B$
+
+$$
+\vert B \vert = \vert V \vert \cos\theta\\
+V \cdot N = \vert V \vert \vert N \vert \cos(\pi - \alpha)\\
+\cos\theta = -\frac{V \cdot N}{\vert N \vert}=-V\cdot N\\
+\vert B \vert = -\frac{V\cdot N}{\vert N \vert} = -V\cdot N\\
+B = -(V\cdot N)\times N\\
+F = V - 2\times (V\cdot N) \times N
+$$
+
+除了计算反射向量以外，还有一点需要考虑--衰减系数。
+衰减系数的作用是什么呢？一方面，每次反射后的光强度肯定是弱了；另一方面每反射一次都会加入被撞物体的颜色。我们可以这样理解：像漫反射球，原始光线碰撞漫反射球后经过多次无规则的反射进入环境，漫反射球的颜色就是环境颜色（最后一次反射光线方向向量的映射）和所有被碰撞到的其他物体颜色（衰减向量中隐含该信息）的叠加。
+
+镜面反射的清晰度可以加一个模糊系数调节。
+我们可以在反射向量的方向向量上添加一个“起点在原点，长度小于1，方向随机”的向量（和漫反射的随机向量一样 ）。
+
+
+
+<div  align="center">   
+<img src="https://gitee.com//dominic_z/markdown_picbed/raw/master/img/sphere1.jpg"  width = "30%"/> 
+<img src="https://gitee.com//dominic_z/markdown_picbed/raw/master/img/sphere2.jpg"  width = "30%"/>
+</div>
+
+
+#### 折射
+有一定透明度的物体会发生折射现象。模拟折射就得知道折射光的方向。现在的目的是怎样能用入射光线和法线的信息求得折射光的方向。
+<div  align="center">   
+<img src="https://gitee.com//dominic_z/markdown_picbed/raw/master/img/4869464adsa (3).png"  width = "30%"/>
+</div>
+
+设：
+$$
+I' = \vert I'\vert I , N' = \vert N' \vert N\\
+\text{令}\frac{\sin\theta_2}{\sin\theta_1}=S 
+$$
+由图得:
+$$
+ K = \frac{\vert O \vert \sin\theta_2}{\vert I' \vert \sin\theta_1} \tag{1}
+$$
+$$
+\vert I'\vert \cos\theta_1 = \vert N'\vert = \vert O \vert \cos \theta_2 
+$$
+为方便计算$\vert O \vert =1 $
+$$
+\Rightarrow  \vert I' \vert = \vert O\vert \frac{\cos\theta_2}{\cos\theta_1} = \frac{\cos\theta_2}{\cos\theta_1} 
+ \tag{2}$$
+$$
+\vert O\vert = -N'+K[I'-(-N')] \\
+			 = KI'+(K-1)N'\\
+			 =K\vert I'\vert +(K-1)\vert N' \vert N \tag{3}
+$$
+
+将(1),(2)带入(3)得：
+
+$$
+\vert O \vert = \frac{\sin\theta_2}{\sin\theta_1}I+[\frac{\sin\theta_2}{\sin\theta_1}\cos\theta_1-\cos\theta_2]N \tag{4}
+$$
+
+由$\frac{\sin\theta_2}{\sin\theta_1}=S$得
+$$
+\sin^2\theta_2= S^2\sin^2\theta_1 \tag{5}
+$$
+$$
+\Rightarrow 1-\cos^2\theta_2 = S^2(1-\cos^2\theta_1)  \\
+\Rightarrow \cos\theta_2=\sqrt{1+S^2(\cos^2\theta_1-1)} \tag{6}
+$$
+
+将（6）带入（5）得 
+$$
+\vert O \vert = SI+[S\cos\theta_1 - \sqrt{1+S^2(\cos^2\theta_1-1)}]N \tag{7}
+$$
+由图可得：
+$$
+\cos\theta_1 = -\frac{IN}{\vert I\vert \vert N \vert} \tag{8}
+$$
+若I，N都为单位向量。则
+$$
+\cos\theta_1=-IN \tag{9}
+$$
+将（9）带入（3）得
+$$
+\vert O \vert = SI+[-S(I \cdot N) - \sqrt{1+S^2((I \cdot N)-1)}]N
+$$
+介质球的半径为负数，它的几何形状是不受影响的，但表面法线点向内，所以它可以作来制造一个空心的玻璃球。
+<div  align="center">   
+<img src="https://gitee.com//dominic_z/markdown_picbed/raw/master/img/4869464adsa (5).jpg"  width = "30%"/>
+</div>
+
+由于折射的原因，透过玻璃球看到的像的位置和玻璃球后景的位置是上下颠倒的。
+
