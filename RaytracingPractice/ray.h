@@ -1,10 +1,19 @@
 #pragma once
-#ifndef RAY_H
-#define RAY_H
 #include <Eigen/Dense>
-
 using namespace Eigen;
 using namespace std;
+
+
+//在单位球体内生成随机方向向量
+RowVector3d random_in_unit_sphere()
+{
+	RowVector3d p;
+	do
+	{
+		p = 2.0*RowVector3d(rand() / double(RAND_MAX), rand() / double(RAND_MAX), rand() / double(RAND_MAX)) - RowVector3d(1, 1, 1);
+	} while (p.squaredNorm() >= 1.0);
+	return p;
+}
 
 class ray
 {
@@ -18,4 +27,3 @@ public:
 	RowVector3d point_at_parameter(double t) const { return A + t * B; }//不同大小的t光可以达到不同地方
 
 };
-#endif // RAY_H

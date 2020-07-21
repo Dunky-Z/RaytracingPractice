@@ -1,6 +1,7 @@
 #pragma once
 
 #include "hitable.h"
+#include "ray.h"
 
 class material
 {
@@ -8,16 +9,6 @@ public:
 	virtual bool scatter(const ray& r_in, const hit_record& rec, RowVector3d& attenuation, ray& scattered) const = 0;
 };
 
-//在单位球体内生成随机方向向量
-RowVector3d random_in_unit_sphere()
-{
-	RowVector3d p;
-	do
-	{
-		p = 2.0*RowVector3d(rand() / double(RAND_MAX), rand() / double(RAND_MAX), rand() / double(RAND_MAX)) - RowVector3d(1, 1, 1);
-	} while (p.dot(p) >= 1.0);
-	return p;
-}
 
 //漫反射类
 class lambertian : public material
@@ -50,7 +41,7 @@ public:
 	//double fuzz;	//模糊系数，调整镜面反射的清晰程度
 	RowVector3d albedo;
 	double fuzz;
-	metal(const RowVector3d& a, double f) : albedo(a) { if (f < 1) fuzz = f; else fuzz = 1; }
+	metal(const RowVector3d& a) : albedo(a){}
 
 	//这里具体实现metal::scatter()。做两件事情：获取镜面反射的反射光线；获取材料的衰减系数
 	virtual bool scatter(const ray& r_in, const hit_record& rec, RowVector3d& attenuation, ray& scattered) const
@@ -63,12 +54,12 @@ public:
 };
 
 
-bool refract(const RowVector3d& v, const RowVector3d& n, float ni_over_nt, RowVector3d& refracted)
+bool refract(const RowVector3d& v, const RowVector3d& n, double ni_over_nt, RowVector3d& refracted)
 {
 	//计算折射光线的方向向量
 	RowVector3d uv = v / (v.norm());
-	float dt = uv.dot(n);
-	float discriminat = 1.0 - ni_over_nt * ni_over_nt*(1 - dt * dt);
+	double dt = uv.dot(n);
+	double discriminat = 1.0 - ni_over_nt * ni_over_nt*(1 - dt * dt);
 	if (discriminat > 0) {
 		refracted = ni_over_nt * (uv - n * dt) - n * sqrt(discriminat);
 		return true;
