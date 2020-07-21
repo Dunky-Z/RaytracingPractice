@@ -1,0 +1,3 @@
+D:/ITabc/ITabc/OpenGL/Practice/RaytracingPractice/build/CMakeFiles/RaytracingPractices.dir
+D:/ITabc/ITabc/OpenGL/Practice/RaytracingPractice/build/CMakeFiles/ALL_BUILD.dir
+D:/ITabc/ITabc/OpenGL/Practice/RaytracingPractice/build/CMakeFiles/ZERO_CHECK.dir
