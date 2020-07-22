@@ -323,3 +323,27 @@ $$
 <div  align="center">   
 <img src="https://gitee.com//dominic_z/markdown_picbed/raw/master/img/4869464adsa (2).jpg"  width = "50%"/>
 </div>
+
+#### Defocus Blur 散焦模糊 更大的光圈看时间
+如果玩过摄影，应该知道，大光圈就会导致景深小。景深小拍出的画面就是我们常看到的人像照片。前景的人像很清晰，背景会被模糊掉。在光线追踪中，光圈的增大，导致图片出现散焦而模糊。但是我们可以调节成像的位置，改变图片的清晰度，使图片在当前光圈条件下尽可能清晰。
+
+所以，此时相机就得再加入两个参数`aperture`（光圈）和`focus_dist`（成像位置）。
+一个真实的相机成像，需要三个部分，`film`胶片，`len`镜头，`aperture`光圈。而模拟成像，只需要去`outside`部分，因为我们并没有实际的胶片成像。相机镜头在接受光线时不时只有一束光进入镜头，所以我们模拟的镜头不再是一束光。
+![](https://gitee.com//dominic_z/markdown_picbed/raw/master/img/20200722215838.png)
+将光圈看做是镜头，从镜头上随机发射光线。
+![](https://gitee.com//dominic_z/markdown_picbed/raw/master/img/20200722220540.png)
+
+<div  align="center">   
+<img src="https://gitee.com//dominic_z/markdown_picbed/raw/master/img/4869464adsa (3).jpg"  width = "50%"/>
+</div>
+
+#### Where next? 最后的最后
+
+
+<div  align="center">   
+<img src="https://gitee.com//dominic_z/markdown_picbed/raw/master/img/4869464adsa (4).jpg"  width = "50%"/>
+</div>
+
+<div  align="center">   
+<img src="https://gitee.com//dominic_z/markdown_picbed/raw/master/img/45645161 (10).jpg"  width = "50%"/>
+</div>
