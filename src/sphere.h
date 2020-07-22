@@ -6,13 +6,22 @@ class sphere : public hitable
 public:
 	double radius;		//球半径
 	sphere() {}
-	material *ma;
+	material *ma;		//材质信息
 	sphere(RowVector3d cen, double r, material *m) : center(cen), radius(r), ma(m) {};
 	virtual bool hit(const ray& r, double tmin, double tmax, hit_record& rec) const;
-	RowVector3d center;
+	RowVector3d center;	//球心坐标
 };
 
 
+/*!
+*@brief  撞击检测
+*@param[out] 
+*@param[in]  const ray & r  光线信息
+*@param[in]  double t_min  方程根最小值
+*@param[in]  double t_max  方程根最大值
+*@param[in]  hit_record & rec  
+*@return     bool  
+*/
 bool sphere::hit(const ray& r, double t_min, double t_max, hit_record& rec) const
 {
 	RowVector3d oc = r.origin() - center;			//球心到光起始点的向量
